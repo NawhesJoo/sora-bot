@@ -16,15 +16,20 @@ const answers = [
   // 긍정 답변
   "그래",
   "어",
+  "그러렴",
+  "ㄱ",
 
   // 부정 답변
   "아니",
   "안 돼",
+  "절.대.안.돼",
+  "ㄴ",
 
   // 애매한 답변
-  "다시 물어봐",
   "흠...",
-  "마음대로 해" 
+  "마음대로 해" ,
+  "...아무것도 하지 마...",
+  "ㅁㄹ?"
   
 ];
 
@@ -35,11 +40,13 @@ function isPolite(text) {
   return endsWithPolite;
 }
 
+/* 채널 제한 기능 제거
 // 채널 이름 체크 함수
 function isValidChannel(channelName) {
   //return channelName.includes('소라고동') || channelName.includes('소라고둥');
   return channelName.includes('소라고동');
 }
+*/
 
 // 명령어 정의 - 모두 같은 옵션 사용
 const createConchCommand = (name, description) => {
@@ -75,17 +82,30 @@ const client = new Client({
 
 // 봇 준비 완료
 client.once(Events.ClientReady, async (readyClient) => {
-  console.log(`✅ Ready! Logged in as ${readyClient.user.tag}`);
+  console.log(`✅✅✅ Ready! Logged in as ${readyClient.user.tag}`);
+  console.log(`봇 ID: ${readyClient.user.id}`);
+  console.log(`서버 수: ${readyClient.guilds.cache.size}`);
 
   // 슬래시 커맨드 등록
   const rest = new REST().setToken(token);
 
   try {
-    console.log("📝 슬래시 커맨드 등록 중...");
+    console.log("🗑️ 기존 슬래시 커맨드 삭제 중...");
 
+    // 기존 명령어 전부 삭제
+    await rest.put(Routes.applicationCommands(clientId), { body: [] });
+
+    console.log("✅ 기존 명령어 삭제 완료!");
+    console.log("📝 새로운 슬래시 커맨드 등록 중...");
+
+    // 글로벌 커맨드 등록 (모든 서버에 적용)
     await rest.put(Routes.applicationCommands(clientId), { body: commands });
 
     console.log("✅ 슬래시 커맨드 등록 완료!");
+    console.log(`📊 등록된 명령어 수: ${commands.length}개`);
+    commands.forEach((cmd) => {
+      console.log(`   - /${cmd.name}`);
+    });
   } catch (error) {
     console.error("❌ 슬래시 커맨드 등록 실패:", error);
   }
@@ -115,6 +135,7 @@ client.on(Events.InteractionCreate, async (interaction) => {
     console.log(`👤 사용자: ${userName} (${userId})`);
     console.log(`❓질문: "${question}"`);
 
+    /* 채널 제한 기능 제거
     // 1. 채널 이름 체크
     if (!isValidChannel(channelName)) {
       return await interaction.reply({
@@ -123,14 +144,16 @@ client.on(Events.InteractionCreate, async (interaction) => {
         ephemeral: true // 본인에게만 보이는 메시지
       });
     }
+    */
 
     // 2. 존댓말 체크 ('요?' 또는 '까?'로 끝나는지)
     if (!isPolite(question)) {
-      const rudeResponses = ["(무시)", "존댓말로 질문해야지"];
+      const rudeResponses = ["(무시)", "존댓말로 다시해."];
       const rudeAnswer = rudeResponses[Math.floor(Math.random() * rudeResponses.length)];
       
       return await interaction.reply({
-        content: `🐚 **마법의 소라고동**\n\n질문: *${question}*\n\n> ${rudeAnswer}`,
+        //content: `🐚 **마법의 소라고동**\n\n질문: *${question}*\n\n> ${rudeAnswer}`,
+        content: `🐚 **마법의 소라고동**\n\n질문: *${question}*\n\n\`\`\`\n${rudeAnswer}\n\`\`\``,
       });
     }
 
@@ -142,7 +165,8 @@ client.on(Events.InteractionCreate, async (interaction) => {
 
     setTimeout(async () => {
       await interaction.editReply({
-        content: `🐚 **마법의 소라고동**\n\n질문: *${question}*\n\n> ${answer}`,
+        //content: `🐚 **마법의 소라고동**\n\n질문: *${question}*\n\n> ${answer}`,
+        content: `🐚 **마법의 소라고동**\n\n질문: *${question}*\n\n\`\`\`\n${answer}\n\`\`\``,
       });
     }, 1000); // 1초 대기
   }
