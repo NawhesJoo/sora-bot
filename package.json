@@ -1,0 +1,25 @@
+{
+  "name": "magic-conch-bot",
+  "version": "1.0.0",
+  "description": "마법의 소라고동 Discord 봇",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "keywords": [
+    "discord",
+    "bot",
+    "magic-conch",
+    "spongebob"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "discord.js": "^14.25.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2"
+  },
+  "type": "commonjs"
+}

@@ -1,0 +1,5 @@
+﻿{
+  "token": "YOUR_BOT_TOKEN",
+  "clientId": "YOUR_CLIENT_ID",
+  "ownerId": "YOUR_DISCORD_USER_ID"
+}

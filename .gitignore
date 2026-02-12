@@ -1,0 +1,17 @@
+# Dependencies
+node_modules/
+
+# Config (토큰 포함!)
+config.json
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
