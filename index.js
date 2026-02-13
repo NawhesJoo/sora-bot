@@ -9,27 +9,24 @@ const {
 } = require("discord.js");
 const { token, clientId } = require("./config.json");
 
-// ========================================
-// 📝 여기에 소라고동의 답변을 작성하세요
-// ========================================
+// 답변 목록
 const answers = [
   // 긍정 답변
   "그래",
-  "어",
+  "해",
   "그러렴",
-  "ㄱ",
+  "그렇게 해",
 
   // 부정 답변
   "아니",
   "안 돼",
   "절.대.안.돼",
-  "ㄴ",
+  "가만히 있어",
 
   // 애매한 답변
   "흠...",
   "마음대로 해" ,
-  "...아무것도 하지 마...",
-  "ㅁㄹ?"
+  "...아무것도 하지 마..."
   
 ];
 
@@ -56,7 +53,7 @@ const createConchCommand = (name, description) => {
     .addStringOption((option) =>
       option
         .setName("질문")
-        .setDescription("소라고동에게 물어볼 질문을 입력하세요")
+        .setDescription("마법의 소라고동에게 물어볼 질문을 입력하세요")
         .setRequired(true),
     );
 };
@@ -64,7 +61,7 @@ const createConchCommand = (name, description) => {
 const commands = [
   createConchCommand("마법의소라고동님", "마법의 소라고동님께 여쭤보기"),
   //createConchCommand("마법의소라고둥님", "마법의 소라고둥님께 여쭤보기"),
-  createConchCommand("소라고동님", "소라고동님께 여쭤보기"),
+  createConchCommand("소라고동님", "마법의 소라고동님께 여쭤보기"),
   //createConchCommand("소라고둥님", "소라고둥님께 여쭤보기"),
   new SlashCommandBuilder()
     .setName("도움말")
@@ -148,7 +145,7 @@ client.on(Events.InteractionCreate, async (interaction) => {
 
     // 2. 존댓말 체크 ('요?' 또는 '까?'로 끝나는지)
     if (!isPolite(question)) {
-      const rudeResponses = ["(무시)", "존댓말로 다시해."];
+      const rudeResponses = ["(무시)", "존댓말로 다시해.", "다시"];
       const rudeAnswer = rudeResponses[Math.floor(Math.random() * rudeResponses.length)];
       
       return await interaction.reply({
