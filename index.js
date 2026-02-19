@@ -31,8 +31,8 @@ const answers = [
 
 // 존댓말 체크 함수
 function isPolite(text) {
-  // '요?' 또는 '까?'로 끝나는지 확인
-  const endsWithPolite = /[요까]\?*$/.test(text.trim());
+  // '죠?', '요?' 또는 '까?'로 끝나는지 확인
+  const endsWithPolite = /[죠요까]\?*$/.test(text.trim());
   return endsWithPolite;
 }
 
@@ -128,7 +128,7 @@ client.on(Events.InteractionCreate, async (interaction) => {
     console.log(`🐚 소라고동 호출!`);
     console.log(`📍 서버: ${guildName}`);
     console.log(`📍 채널: #${channelName}`);
-    console.log(`👤 사용자: ${userName} (${userId})`);
+    console.log(`👤 사용자: ${userName}`);
     console.log(`❓질문: "${question}"`);
 
     /* 채널 제한 기능 제거
@@ -146,6 +146,9 @@ client.on(Events.InteractionCreate, async (interaction) => {
     if (!isPolite(question)) {
       const rudeResponses = ["(무시)", "존댓말로 다시해.", "다시"];
       const rudeAnswer = rudeResponses[Math.floor(Math.random() * rudeResponses.length)];
+
+      console.log(`💢 답변: "${rudeAnswer}" (존댓말 사용 안함)`);
+      console.log("=".repeat(50) + "\n");      
       
       return await interaction.reply({
         //content: `🐚 **마법의 소라고동**\n\n질문: *${question}*\n\n> ${rudeAnswer}`,
@@ -155,6 +158,9 @@ client.on(Events.InteractionCreate, async (interaction) => {
 
     // 3. 정상 답변
     const answer = answers[Math.floor(Math.random() * answers.length)];
+
+    console.log(`✅ 답변: "${answer}"`);
+    console.log("=".repeat(50) + "\n");    
 
     // 응답 (약간의 지연으로 생각하는 척)
     await interaction.deferReply();
