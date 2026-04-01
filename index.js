@@ -120,15 +120,26 @@ client.on(Events.InteractionCreate, async (interaction) => {
   if (conchCommands.includes(commandName)) {
     const question = interaction.options.getString("질문");
     const channelName = interaction.channel.name;
-    const userName = interaction.user.tag; // 사용자 이름#태그
+    
+    // Discord 사용자 정보
+    const displayName = interaction.member?.displayName || interaction.user.displayName; // 서버에서 보이는 이름 (서버 관리자가 설정)
+    const globalName = interaction.user.globalName || interaction.user.username; // 전역 닉네임
+    
     const userId = interaction.user.id; // 사용자 ID
     const guildName = interaction.guild?.name || "DM"; // 서버 이름
+    const timestamp = new Date().toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' });
 
     console.log("\n" + "=".repeat(50));
+    console.log(`🕐 시간: ${timestamp}`);
     console.log(`🐚 소라고동 호출!`);
     console.log(`📍 서버: ${guildName}`);
     console.log(`📍 채널: #${channelName}`);
-    console.log(`👤 사용자: ${userName}`);
+    // displayName과 globalName이 다르면 둘 다 표시, 같으면 하나만 표시
+    if (displayName !== globalName) {
+      console.log(`👤 사용자: ${displayName} (${globalName})`);
+    } else {
+      console.log(`👤 사용자: ${displayName}`);
+    }
     console.log(`❓질문: "${question}"`);
 
     /* 채널 제한 기능 제거
